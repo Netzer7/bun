@@ -29,6 +29,158 @@ $ proto install bun
 ```
 
 {% /codetabs %}
+## Git Instructions
+### Step 1: Fork
+
+Fork the project [on GitHub](https://github.com/oven-sh/bun) and clone your fork
+locally.
+
+```bash
+git clone git@github.com:username/node.git
+cd node
+git remote add upstream https://github.com/nodejs/node.git
+git fetch upstream
+```
+
+### Step 2: Branch
+
+As a best practice to keep your development environment as organized as
+possible, create local branches to work within. These should also be created
+directly off of the upstream default branch.
+
+```bash
+git checkout -b my-branch -t upstream/HEAD
+```
+
+### Step 3: Commit
+
+It is a best practice to keep your changes as logically grouped
+as possible within individual commits. There is no limit to the number of
+commits any single pull request may have, and many contributors find it easier
+to review changes that are split across multiple commits.
+
+```bash
+git add my/changed/files
+git commit
+```
+#### Commit message guidelines
+
+A good commit message should describe what changed and why.
+
+1. The first line should:
+
+   * contain a short description of the change (preferably 50 characters or
+     less, and no more than 72 characters)
+   * be entirely in lowercase with the exception of proper nouns, acronyms, and
+     the words that refer to code, like function/variable names
+   * be prefixed with the name of the changed [subsystem](#appendix-subsystems)
+     and start with an imperative verb. Check the output of `git log --oneline
+     files/you/changed` to find out what subsystems your changes touch.
+
+   Examples:
+
+   * `net: add localAddress and localPort to Socket`
+   * `src: fix typos in async_wrap.h`
+
+2. Keep the second line blank.
+
+3. Wrap all other lines at 72 columns (except for long URLs).
+
+4. If your patch fixes an open issue, you can add a reference to it at the end
+   of the log. Use the `Fixes:` prefix and the full issue URL. For other
+   references use `Refs:`.
+
+   Examples:
+
+   * `Fixes: https://github.com/oven-sh/bun/issues/1337`
+   * `Refs: https://eslint.org/docs/rules/space-in-parens.html`
+   * `Refs: https://github.com/oven-sh/bun/pull/3615`
+
+5. If your commit introduces a breaking change (`semver-major`), it should
+   contain an explanation about the reason of the breaking change, which
+   situation would trigger the breaking change, and what is the exact change.
+
+Sample complete commit message:
+
+```text
+subsystem: explain the commit in one line
+
+The body of the commit message should be one or more paragraphs, explaining
+things in more detail. Please word-wrap to keep columns to 72 characters or
+less.
+
+Fixes: https://github.com/oven-sh/bun/issues/1337
+Refs: https://eslint.org/docs/rules/space-in-parens.html
+```
+
+If you are new to contributing to Bun, please try to do your best at
+conforming to these guidelines, but do not worry if you get something wrong.
+One of the existing contributors will help get things situated and the
+contributor landing the pull request will ensure that everything follows
+the project guidelines.
+
+### Step 4: Rebase
+
+As a best practice, once you have committed your changes, it is a good idea
+to use `git rebase` (not `git merge`) to synchronize your work with the main
+repository.
+
+```bash
+git fetch upstream HEAD
+git rebase FETCH_HEAD
+```
+
+This ensures that your working branch has the latest changes from `oven-sh/bun`.
+
+### Step 5: Push
+
+Once you are sure your commits are ready to go, with passing tests and linting,
+begin the process of opening a pull request by pushing your working branch to
+your fork on GitHub.
+
+```bash
+git push origin my-branch
+```
+
+### Step 6: Opening the pull request
+
+From within GitHub, opening a new pull request will present you with a
+[pull request template][]. Please try to do your best at filling out the
+details, but feel free to skip parts if you're not sure what to put.
+
+Once opened, pull requests are usually reviewed within a few days.
+
+To get feedback on your proposed change even though it is not ready
+to land, use the `Convert to draft` option in the GitHub UI.
+Do not use the `wip` label as it might not prevent the PR
+from landing before you are ready.
+
+### Step 7: Discuss and update
+
+You will probably get feedback or requests for changes to your pull request.
+This is a big part of the submission process so don't be discouraged! Some
+contributors may sign off on the pull request right away, others may have
+more detailed comments or feedback. This is a necessary part of the process
+in order to evaluate whether the changes are correct and necessary.
+
+To make changes to an existing pull request, make the changes to your local
+branch, add a new commit with those changes, and push those to your fork.
+GitHub will automatically update the pull request.
+
+```bash
+git add my/changed/files
+git commit
+git push origin my-branch
+```
+
+If a git conflict arises, it is necessary to synchronize your branch with other
+changes that have landed upstream by using `git rebase`:
+
+```bash
+git fetch upstream HEAD
+git rebase FETCH_HEAD
+git push --force-with-lease origin my-branch
+```
 
 ## Install LLVM
 
